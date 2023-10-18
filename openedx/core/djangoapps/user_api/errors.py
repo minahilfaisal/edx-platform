@@ -63,6 +63,11 @@ class AccountCountryInvalid(AccountRequestError):
     pass  # lint-amnesty, pylint: disable=unnecessary-pass
 
 
+class AccountOrganizationInvalid(AccountRequestError):
+    """The requested organization does not exist. """
+    pass  # lint-amnesty, pylint: disable=unnecessary-pass
+
+
 class AccountDataBadLength(AccountRequestError):
     """The requested account data is either too short or too long. """
     pass  # lint-amnesty, pylint: disable=unnecessary-pass

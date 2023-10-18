@@ -486,6 +486,17 @@ def get_country_validation_error(country):
     return _validate(_validate_country, errors.AccountCountryInvalid, country)
 
 
+def get_organization_validation_error(organization):
+    """Get the built-in validation error message for when
+    the organization is invalid in some way.
+
+    :param organization: The proposed organization.
+    :return: Validation error message.
+
+    """
+    return _validate(_validate_organization, errors.AccountOrganizationInvalid, organization)
+
+
 def get_username_existence_validation_error(username):
     """Get the built-in validation error message for when
     the username has an existence conflict.
@@ -662,6 +673,17 @@ def _validate_country(country):
     """
     if country == '' or country == '--':  # lint-amnesty, pylint: disable=consider-using-in
         raise errors.AccountCountryInvalid(accounts.REQUIRED_FIELD_COUNTRY_MSG)
+
+
+def _validate_organization(organization):
+    """Validate the organization selection.
+
+    :param organization: The proposed organization.
+    :return: None
+
+    """
+    if organization == '' or organization == '--':  # lint-amnesty, pylint: disable=consider-using-in
+        raise errors.AccountOrganizationInvalid(accounts.REQUIRED_FIELD_ORGANIZATION_MSG)
 
 
 def _validate_username_doesnt_exist(username):

@@ -51,7 +51,8 @@ from openedx.core.djangoapps.user_api.accounts.api import (
     get_name_validation_error,
     get_password_validation_error,
     get_username_existence_validation_error,
-    get_username_validation_error
+    get_username_validation_error,
+    get_organization_validation_error,
 )
 from openedx.core.djangoapps.user_api.preferences import api as preferences_api
 from openedx.core.djangoapps.user_authn.cookies import set_logged_in_cookies
@@ -784,6 +785,8 @@ class RegistrationValidationView(APIView):
                 decision with the username is made if it exists in the input.
             "country":
                 A handler to check whether the validity of country fields.
+            "organization":
+                A handler to check the validity of the organiztion field.
     """
 
     # This end-point is available to anonymous users, so no authentication is needed.
@@ -837,6 +840,11 @@ class RegistrationValidationView(APIView):
         """ Country validator """
         country = request.data.get('country')
         return get_country_validation_error(country)
+    
+    def organization_handler(self, request):
+        """ Organization validator """
+        organization = request.data.get('organization')
+        return get_organization_validation_error(organization)
 
     validation_handlers = {
         "name": name_handler,
@@ -844,7 +852,8 @@ class RegistrationValidationView(APIView):
         "email": email_handler,
         "confirm_email": confirm_email_handler,
         "password": password_handler,
-        "country": country_handler
+        "country": country_handler,
+        # "organization": organization_handler
     }
 
     @method_decorator(
