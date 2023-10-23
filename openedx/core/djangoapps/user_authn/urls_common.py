@@ -44,6 +44,9 @@ urlpatterns = [
          name='registration_validation'
          ),
 
+    path('api/user/v1/organizations/registration', register.RegistrationOrganizationView.as_view(),
+         name='registration_organizations_list'),
+
     path('login_ajax', login.login_user, name="login_api"),
 
     # Moved from user_api/legacy_urls.py

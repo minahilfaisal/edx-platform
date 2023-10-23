@@ -29,6 +29,7 @@ from openedx_filters.learning.filters import StudentRegistrationRequested
 from pytz import UTC
 from django_ratelimit.decorators import ratelimit
 from requests import HTTPError
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from social_core.exceptions import AuthAlreadyAssociated, AuthException
@@ -66,6 +67,7 @@ from openedx.core.djangoapps.user_authn.views.registration_form import (
 )
 from openedx.core.djangoapps.user_authn.tasks import check_pwned_password_and_send_track_event
 from openedx.core.djangoapps.user_authn.toggles import is_require_third_party_auth_enabled
+from openedx.core.djangolib.js_utils import dump_js_escaped_json
 from common.djangoapps.student.helpers import (
     AccountValidationError,
     authenticate_new_user,
@@ -87,6 +89,8 @@ from common.djangoapps.util.db import outer_atomic
 from common.djangoapps.util.json_request import JsonResponse
 
 from edx_django_utils.user import generate_password  # lint-amnesty, pylint: disable=wrong-import-order
+
+from organizations.api import get_organizations
 
 log = logging.getLogger("edx.student")
 AUDIT_LOG = logging.getLogger("audit")
@@ -840,7 +844,7 @@ class RegistrationValidationView(APIView):
         """ Country validator """
         country = request.data.get('country')
         return get_country_validation_error(country)
-    
+
     def organization_handler(self, request):
         """ Organization validator """
         organization = request.data.get('organization')
@@ -853,7 +857,7 @@ class RegistrationValidationView(APIView):
         "confirm_email": confirm_email_handler,
         "password": password_handler,
         "country": country_handler,
-        # "organization": organization_handler
+        "organization": organization_handler,
     }
 
     @method_decorator(
@@ -903,3 +907,24 @@ class RegistrationValidationView(APIView):
             response_dict['username_suggestions'] = self.username_suggestions
 
         return Response(response_dict)
+
+
+class RegistrationOrganizationView(APIView):
+    """View rendering organization list as json.
+
+    This view renders organization list json which is used in org
+    dropdown while creating new account for the user.
+    """
+
+    def get(self, request, *args, **kwargs):  # lint-amnesty, pylint: disable=unused-argument
+        """Returns organization list as json."""
+        organizations = get_organizations()
+        list_of_orgs = []
+        for org in organizations:
+            list_of_orgs.append({
+                "name": org["name"],
+                "code": org["short_name"],
+            })
+
+        response_dict = {'organizations': list_of_orgs}
+        return Response(response_dict, status=status.HTTP_200_OK)
