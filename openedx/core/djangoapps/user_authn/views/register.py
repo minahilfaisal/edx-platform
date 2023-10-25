@@ -153,7 +153,6 @@ def create_account_with_params(request, params):  # pylint: disable=too-many-sta
     # Copy params so we can modify it; we can't just do dict(params) because if
     # params is request.POST, that results in a dict containing lists of values
     params = dict(list(params.items()))
-    log(params)
 
     # allow to define custom set of required/optional/hidden fields via configuration
     extra_fields = configuration_helpers.get_value(
@@ -366,6 +365,7 @@ def _track_user_registration(user, profile, params, third_party_provider, regist
             'address': profile.mailing_address,
             'gender': profile.gender_display,
             'country': str(profile.country),
+            'organization': str(profile.organization),
             'is_marketable': is_marketable
         }
         if settings.MARKETING_EMAILS_OPT_IN and params.get('marketing_emails_opt_in'):
@@ -876,7 +876,8 @@ class RegistrationValidationView(APIView):
             "email": "mslm@gmail.com",
             "confirm_email": "mslm@gmail.com",
             "password": "password123",
-            "country": "PK"
+            "country": "PK",
+            "organization": "Demo org 1"
         }
         ```
         where each key is the appropriate form field name and the value is

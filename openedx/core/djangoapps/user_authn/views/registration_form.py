@@ -350,6 +350,7 @@ class RegistrationFormFactory:
             "profession",
             "specialty",
             "marketing_emails_opt_in",
+            "organization"
         ]
 
         if settings.ENABLE_COPPA_COMPLIANCE and 'year_of_birth' in self.EXTRA_FIELDS:

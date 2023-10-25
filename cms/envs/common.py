@@ -2648,6 +2648,7 @@ REGISTRATION_EXTRA_FIELDS = {
     'city': 'hidden',
     'country': 'hidden',
     'marketing_emails_opt_in': 'hidden',
+    'organization': 'required',
 }
 EDXAPP_PARSE_KEYS = {}
 
