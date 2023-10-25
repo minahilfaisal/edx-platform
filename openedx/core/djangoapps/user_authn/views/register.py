@@ -153,6 +153,7 @@ def create_account_with_params(request, params):  # pylint: disable=too-many-sta
     # Copy params so we can modify it; we can't just do dict(params) because if
     # params is request.POST, that results in a dict containing lists of values
     params = dict(list(params.items()))
+    log(params)
 
     # allow to define custom set of required/optional/hidden fields via configuration
     extra_fields = configuration_helpers.get_value(

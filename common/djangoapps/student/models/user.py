@@ -554,12 +554,12 @@ class UserProfile(models.Model):
     profile_image_uploaded_at = models.DateTimeField(null=True, blank=True)
     phone_regex = RegexValidator(regex=r'^\+?1?\d*$', message="Phone number can only contain numbers.")
     phone_number = models.CharField(validators=[phone_regex], blank=True, null=True, max_length=50)
-    # organization_id = models.IntegerField(
-    #     null=True,
-    #     blank=True,
-    #     db_index=True,
-    #     help_text=_('Organization id of the user from the list of available organizations'),
-    # )
+    organization = models.CharField(
+        null=True,
+        blank=True,
+        max_length=300,
+        help_text=_('Organization name of the user'),
+    )
 
     @property
     def has_profile_image(self):

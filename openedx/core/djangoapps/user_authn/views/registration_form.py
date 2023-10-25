@@ -197,7 +197,8 @@ class AccountCreationForm(forms.Form):
             "mailing_address": _("Your mailing address is required"),
             "goals": _("A description of your goals is required"),
             "city": _("A city is required"),
-            "country": _("A country is required")
+            "country": _("A country is required"),
+            "organization": _("An organization is required")
         }
         for field_name, field_value in extra_fields.items():
             if field_name not in self.fields:
@@ -548,6 +549,31 @@ class RegistrationFormFactory:
             instructions=name_instructions,
             restrictions={
                 "max_length": accounts.NAME_MAX_LENGTH,
+            },
+            required=required
+        )
+
+    def _add_organization_field(self, form_desc, required=True):
+        """Add an organization field to a form description.
+        Arguments:
+            form_desc: A form description
+        Keyword Arguments:
+            required (bool): Whether this field is required; defaults to True
+        """
+        # Translators: This label appears above a field on the registration form
+        # meant to hold the user's organization.
+        organization_label = _("Organization")
+
+        # Translators: These instructions appear on the registration form, immediately
+        # below a field meant to hold the user's organization.
+        organization_instructions = _("This is your organization.")
+
+        form_desc.add_field(
+            "organization",
+            label=organization_label,
+            instructions=organization_instructions,
+            restrictions={
+                "max_length": 300,
             },
             required=required
         )
