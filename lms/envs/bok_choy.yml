@@ -231,7 +231,7 @@ PASSWORD_RESET_SUPPORT_LINK: https://support.example.com/password-reset-help.htm
 REGISTRATION_EXTENSION_FORM: openedx.core.djangoapps.user_api.tests.test_helpers.TestCaseForm
 REGISTRATION_EXTRA_FIELDS: {city: hidden, country: required, gender: optional, goals: optional,
   honor_code: required, level_of_education: optional, mailing_address: optional, terms_of_service: hidden,
-  year_of_birth: optional}
+  year_of_birth: optional, organization: required}
 # Use MockSearchEngine as the search engine for test scenario
 SEARCH_ENGINE: "search.tests.mock_search_engine.MockSearchEngine"
 # this secret key should be the same as cms/envs/bok_choy.py's
