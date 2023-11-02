@@ -60,6 +60,12 @@ INVALID_COUNTRIES = [
     "--"
 ]
 
+INVALID_ORGANIZATIONS = [
+    None,
+    "",
+    "--"
+]
+
 VALID_NAMES = [
     'Validation Bot',
     'Validation Bot'
@@ -95,4 +101,10 @@ VALID_COUNTRIES = [
     'PK',
     'Pakistan',
     'US'
+]
+
+VALID_ORGANZIATIONS = [
+    'edx',
+    'Demo Org 1',
+    'orgx1'
 ]

@@ -2579,6 +2579,7 @@ class RegistrationValidationViewTests(test_utils.ApiTestCase, OpenEdxEventsTestM
         ['password', list(testutils.VALID_PASSWORDS)],
         ['username', list(testutils.VALID_USERNAMES)],
         ['country', list(testutils.VALID_COUNTRIES)],
+        ['organization', list(testutils.VALID_ORGANZIATIONS)],
     )
     @ddt.unpack
     def test_positive_validation_decision(self, form_field_name, user_data):
@@ -2597,6 +2598,7 @@ class RegistrationValidationViewTests(test_utils.ApiTestCase, OpenEdxEventsTestM
         ['password', testutils.INVALID_PASSWORDS[1:]],
         ['username', testutils.INVALID_USERNAMES[1:]],
         ['country', testutils.INVALID_COUNTRIES[1:]],
+        ['organization', testutils.INVALID_ORGANIZATIONS[1:]],
     )
     @ddt.unpack
     def test_negative_validation_decision(self, form_field_name, user_data):
