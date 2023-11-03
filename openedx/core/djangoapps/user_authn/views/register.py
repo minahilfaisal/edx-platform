@@ -29,6 +29,7 @@ from openedx_filters.learning.filters import StudentRegistrationRequested
 from pytz import UTC
 from django_ratelimit.decorators import ratelimit
 from requests import HTTPError
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
 from social_core.exceptions import AuthAlreadyAssociated, AuthException
@@ -51,7 +52,8 @@ from openedx.core.djangoapps.user_api.accounts.api import (
     get_name_validation_error,
     get_password_validation_error,
     get_username_existence_validation_error,
-    get_username_validation_error
+    get_username_validation_error,
+    get_organization_validation_error,
 )
 from openedx.core.djangoapps.user_api.preferences import api as preferences_api
 from openedx.core.djangoapps.user_authn.cookies import set_logged_in_cookies
@@ -65,6 +67,7 @@ from openedx.core.djangoapps.user_authn.views.registration_form import (
 )
 from openedx.core.djangoapps.user_authn.tasks import check_pwned_password_and_send_track_event
 from openedx.core.djangoapps.user_authn.toggles import is_require_third_party_auth_enabled
+from openedx.core.djangolib.js_utils import dump_js_escaped_json
 from common.djangoapps.student.helpers import (
     AccountValidationError,
     authenticate_new_user,
@@ -86,6 +89,8 @@ from common.djangoapps.util.db import outer_atomic
 from common.djangoapps.util.json_request import JsonResponse
 
 from edx_django_utils.user import generate_password  # lint-amnesty, pylint: disable=wrong-import-order
+
+from organizations.api import get_organizations
 
 log = logging.getLogger("edx.student")
 AUDIT_LOG = logging.getLogger("audit")
@@ -360,6 +365,7 @@ def _track_user_registration(user, profile, params, third_party_provider, regist
             'address': profile.mailing_address,
             'gender': profile.gender_display,
             'country': str(profile.country),
+            'organization': str(profile.organization),
             'is_marketable': is_marketable
         }
         if settings.MARKETING_EMAILS_OPT_IN and params.get('marketing_emails_opt_in'):
@@ -784,6 +790,8 @@ class RegistrationValidationView(APIView):
                 decision with the username is made if it exists in the input.
             "country":
                 A handler to check whether the validity of country fields.
+            "organization":
+                A handler to check the validity of the organiztion field.
     """
 
     # This end-point is available to anonymous users, so no authentication is needed.
@@ -838,13 +846,19 @@ class RegistrationValidationView(APIView):
         country = request.data.get('country')
         return get_country_validation_error(country)
 
+    def organization_handler(self, request):
+        """ Organization validator """
+        organization = request.data.get('organization')
+        return get_organization_validation_error(organization)
+
     validation_handlers = {
         "name": name_handler,
         "username": username_handler,
         "email": email_handler,
         "confirm_email": confirm_email_handler,
         "password": password_handler,
-        "country": country_handler
+        "country": country_handler,
+        "organization": organization_handler,
     }
 
     @method_decorator(
@@ -862,7 +876,8 @@ class RegistrationValidationView(APIView):
             "email": "mslm@gmail.com",
             "confirm_email": "mslm@gmail.com",
             "password": "password123",
-            "country": "PK"
+            "country": "PK",
+            "organization": "Demo org 1"
         }
         ```
         where each key is the appropriate form field name and the value is
@@ -894,3 +909,24 @@ class RegistrationValidationView(APIView):
             response_dict['username_suggestions'] = self.username_suggestions
 
         return Response(response_dict)
+
+
+class RegistrationOrganizationView(APIView):
+    """View rendering organization list as json.
+
+    This view renders organization list json which is used in org
+    dropdown while creating new account for the user.
+    """
+
+    def get(self, request, *args, **kwargs):  # lint-amnesty, pylint: disable=unused-argument
+        """Returns organization list as json."""
+        organizations = get_organizations()
+        list_of_orgs = []
+        for org in organizations:
+            list_of_orgs.append({
+                "name": org["name"],
+                "code": org["short_name"],
+            })
+
+        response_dict = {'organizations': list_of_orgs}
+        return Response(response_dict, status=status.HTTP_200_OK)

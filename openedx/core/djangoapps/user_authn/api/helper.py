@@ -37,6 +37,7 @@ class RegistrationFieldsContext(APIView):
         'profession',
         'specialty',
         'marketing_emails_opt_in',
+        'organization',
     ]
     user_profile_fields = [field.name for field in UserProfile._meta.get_fields()]
 

@@ -349,6 +349,15 @@ def add_country_field(is_field_required=False):
     return {'name': 'country', 'error_message': is_field_required}
 
 
+def add_organization_field(is_field_required=False):
+    """
+    Returns organization field description. This field is configurable on frontend, we just need
+    to send the field name and whether or not we want to show error message if this field is
+    empty
+    """
+    return {'name': 'organization', 'error_message': is_field_required}
+
+
 def add_confirm_email_field(is_field_required=False):
     """
     Returns a email confirmation field description

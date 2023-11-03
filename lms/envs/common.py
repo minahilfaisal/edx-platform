@@ -3632,6 +3632,7 @@ REGISTRATION_EXTRA_FIELDS = {
     'terms_of_service': 'hidden',
     'city': 'hidden',
     'country': 'hidden',
+    'organization': 'hidden',
 }
 
 REGISTRATION_FIELD_ORDER = [
@@ -3656,6 +3657,7 @@ REGISTRATION_FIELD_ORDER = [
     "goals",
     "honor_code",
     "terms_of_service",
+    "organization",
 ]
 
 # Optional setting to restrict registration / account creation to only emails
