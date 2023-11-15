@@ -164,7 +164,7 @@ class VideoExtension(markdown.Extension):  # lint-amnesty, pylint: disable=missi
         pattern = klass(re)
         pattern.md = md
         pattern.ext = self
-        md.inlinePatterns.register(pattern, name, "<reference")
+        md.inlinePatterns.register(pattern, name, 40)
 
     def extendMarkdown(self, md, md_globals):  # lint-amnesty, pylint: disable=arguments-differ, unused-argument
         self.add_inline(md, 'bliptv', Bliptv,
