@@ -2816,7 +2816,9 @@ class LmsModuleSystemShimTest(SharedModuleStoreTestCase):
             assert self.block.runtime.get_real_user() == self.user
 
     def test_render_template(self):
-        rendered = self.block.runtime.service(self.block, 'mako').render_template('templates/edxmako.html', {'element_id': 'hi'})  # pylint: disable=not-callable
+        rendered = self.block.runtime.service(self.block, 'mako').render_template(
+            'templates/edxmako.html', {'element_id': 'hi'}
+        )  # pylint: disable=not-callable
         assert rendered == '<div id="hi" ns="main">Testing the MakoService</div>\n'
 
     @override_settings(COURSES_WITH_UNSAFE_CODE=[r'course-v1:edX\+LmsModuleShimTest\+2021_Fall'])
