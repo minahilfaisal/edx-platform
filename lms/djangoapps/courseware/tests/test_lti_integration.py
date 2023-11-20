@@ -117,7 +117,10 @@ class TestLTI(BaseTestXmodule):
 
     def test_lti_constructor(self):
         generated_content = self.block.student_view(None).content
-        expected_content = self.block.runtime.service(self.block, 'mako').render_template('lti.html', self.expected_context)
+        expected_content = self.block.runtime.service(self.block, 'mako').render_template(
+            'lti.html',
+            self.expected_context
+        )
         assert generated_content == expected_content
 
     def test_lti_preview_handler(self):
