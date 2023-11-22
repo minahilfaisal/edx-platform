@@ -2838,7 +2838,7 @@ class LmsModuleSystemShimTest(SharedModuleStoreTestCase):
             source_file=self.PYTHON_LIB_SOURCE_FILE,
             target_filename=self.PYTHON_LIB_FILENAME,
         )
-        assert self.block.runtime.get_python_lib_zip() == zipfile
+        assert self.block.runtime._services.get('sandbox').get_python_lib_zip() == zipfile  # lint-amnesty, pylint: disable=protected-access
 
     def test_no_get_python_lib_zip(self):
         zipfile = upload_file_to_course(
@@ -2847,7 +2847,7 @@ class LmsModuleSystemShimTest(SharedModuleStoreTestCase):
             source_file=self.PYTHON_LIB_SOURCE_FILE,
             target_filename=self.PYTHON_LIB_FILENAME,
         )
-        assert self.block.runtime.get_python_lib_zip() is None
+        assert self.block.runtime._services.get('sandbox').get_python_lib_zip() is None  # lint-amnesty, pylint: disable=protected-access
 
     def test_cache(self):
         assert hasattr(self.block.runtime.cache, 'get')
