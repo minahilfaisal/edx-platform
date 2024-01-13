@@ -712,7 +712,7 @@ class FieldDataCache:
         Add all `blocks` to this FieldDataCache.
         """
         if self.user.is_authenticated:
-            self.scorable_locations.update(block.location for block in blocks if block.has_score)
+            self.scorable_locations.update(block.scope_ids.usage_id for block in blocks if block.has_score)
             for scope, fields in self._fields_to_cache(blocks).items():
                 if scope not in self.cache:
                     continue
