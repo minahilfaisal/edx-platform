@@ -229,4 +229,7 @@ class TestWordCloud(BaseTestXmodule):
             'submitted': False,  # default value,
         }
 
-        assert fragment.content == self.runtime.render_template('word_cloud.html', expected_context)
+        assert fragment.content == self.block.runtime.service(self.block, 'mako').render_template(
+            'word_cloud.html',
+            expected_context
+        )

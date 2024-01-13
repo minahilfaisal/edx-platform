@@ -46,10 +46,10 @@ class MakoTemplateBlockBase:
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        if getattr(self.runtime, 'render_template', None) is None:
+        if getattr(self.runtime, 'service', None) is None:
             raise TypeError(
-                '{runtime} must have a render_template function'
-                ' in order to use a MakoDescriptor'.format(
+                '{runtime} must have a service function that can be used to call the render_template'
+                'function of the MakoService in order to use a MakoDescriptor'.format(
                     runtime=self.runtime,
                 )
             )
