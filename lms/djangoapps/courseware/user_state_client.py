@@ -278,18 +278,18 @@ class DjangoXBlockUserStateClient(XBlockUserStateClient):
             username (str): The name of the user to load `StudentModule`s for.
             block_keys (list of :class:`~UsageKey`): The set of XBlocks to load data for.
         """
-        course_key_func = attrgetter('course_key')
-        by_course = itertools.groupby(
-            sorted(block_keys, key=course_key_func),
-            course_key_func,
+        context_key_func = attrgetter('context_key')
+        by_context = itertools.groupby(
+            sorted(block_keys, key=context_key_func),
+            context_key_func,
         )
 
-        for course_key, usage_keys in by_course:
+        for context_key, usage_keys in by_context:
             query = StudentModule.objects.chunked_filter(
                 'module_state_key__in',
                 usage_keys,
                 student__username=username,
-                course_id=course_key,
+                course_id=context_key,
             )
 
             for student_module in query:

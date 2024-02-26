@@ -1303,7 +1303,7 @@ class BaseEdxImportClient(abc.ABC):
 
         course_key_id = base64.b32encode(
             hashlib.blake2s(
-                str(modulestore_key.course_key).encode()
+                str(modulestore_key.context_key).encode()
             ).digest()
         )[:16].decode().lower()
         # Prepend 'c' to allow changing hash without conflicts.

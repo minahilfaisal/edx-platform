@@ -1008,7 +1008,7 @@ def get_score(user_id, usage_key):
         student_module = StudentModule.objects.get(
             student_id=user_id,
             module_state_key=usage_key,
-            course_id=usage_key.course_key,
+            course_id=usage_key.context_key,
         )
     except StudentModule.DoesNotExist:
         return None

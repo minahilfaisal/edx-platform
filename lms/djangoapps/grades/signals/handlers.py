@@ -181,7 +181,7 @@ def score_published_handler(sender, block, user, raw_earned, raw_possible, only_
             raw_possible=raw_possible,
             weight=getattr(block, 'weight', None),
             user_id=user.id,
-            course_id=str(block.location.course_key),
+            course_id=str(block.location.context_key),
             usage_id=str(block.location),
             only_if_higher=only_if_higher,
             modified=score_modified_time,

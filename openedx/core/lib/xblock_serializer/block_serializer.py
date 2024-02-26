@@ -29,7 +29,7 @@ class XBlockSerializer:
         olx_node = self._serialize_block(block)
         self.olx_str = etree.tostring(olx_node, encoding="unicode", pretty_print=True)
 
-        course_key = self.orig_block_key.course_key
+        course_key = self.orig_block_key.context_key
         # Search the OLX for references to files stored in the course's
         # "Files & Uploads" (contentstore):
         self.olx_str = utils.rewrite_absolute_static_urls(self.olx_str, course_key)
