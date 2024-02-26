@@ -276,8 +276,8 @@ class CmsModuleSystemShimTest(ModuleStoreTestCase):
         assert self.block.runtime.get_python_lib_zip() is None
 
     def test_cache(self):
-        assert hasattr(self.block.runtime.cache, 'get')
-        assert hasattr(self.block.runtime.cache, 'set')
+        assert hasattr(self.block.runtime._services.get('cache'), 'get')  # lint-amnesty, pylint: disable=protected-access
+        assert hasattr(self.block.runtime._services.get('cache'), 'set')  # lint-amnesty, pylint: disable=protected-access
 
     def test_replace_urls(self):
         html = '<a href="/static/id">'
